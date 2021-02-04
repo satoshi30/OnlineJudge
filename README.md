@@ -48,10 +48,8 @@
     python で提出
     ```
     python submit_python.py
-
     ```
     pypy で提出
     ```
     python submit_pypy.py
-
     ```
