@@ -41,15 +41,15 @@
    
 4. サンプルデータにてテスト
     ```
-    python samples_test.py
+    python oj_commands.py -u test
     ```
    
 5. 回答を提出
     python で提出
     ```
-    python submit_python.py
+    python oj_commands.py -u submit
     ```
     pypy で提出
     ```
-    python submit_pypy.py
+    python oj_commands.py -u submit -l pypy
     ```
