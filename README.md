@@ -43,6 +43,10 @@
     ```
     python oj_commands.py -u test
     ```
+    - PyChar の Debugger を利用している場合、以下で行えます
+    ```
+    python debug_test.py
+    ```
    
 5. 回答を提出
     python で提出

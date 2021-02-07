@@ -1,5 +1,21 @@
 from typing import Generator
 
+    # 素数の列挙、エラトステネスの篩
+    def sieve_of_eratosthenes(limit: int) -> list:
+        """
+        :param limit: upper limit
+        :return: primes: List of prime numbers
+        """
+        primes = []
+        numbers = [i for i in range(2, limit + 1)]
+        p = numbers[0]
+        while p ** 2 <= limit:
+            primes.append(p)
+            numbers = [i for i in numbers if i % p != 0]
+            p = numbers[0]
+        primes += numbers
+        return primes
+
     # 素因数分解、素因数のリストを返す
     # https://atcoder.jp/contests/abc169/tasks/abc169_d
     def prime_factorize(num: int) -> list:
