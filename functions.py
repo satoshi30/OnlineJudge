@@ -1,4 +1,62 @@
-from typing import Generator
+from typing import Generator\
+
+
+# FenwickTree, BinaryIndexedTree
+# https://qiita.com/R_olldIce/items/f2f7930e7f67963f0493
+# https://atcoder.jp/contests/practice2/tasks/practice2_b
+class FenwickTree(object):
+    def __init__(self, size):
+        self.size = size
+        self.data = [0] * (size+1)
+
+    def add(self, idx, num):https://atcoder.jp/contests/abc180/tasks/abc180_d
+        i = 0
+        while idx <= self.size:
+            self.data[idx] += num
+            while True:
+                if (idx >> i) & 1:
+                    idx += 1 << i
+                    break
+                i += 1
+
+    def sum(self, l, r):
+        def _sum(idx):
+            sum = self.data[idx]
+            i = 0
+            while idx > 0:
+                while True:
+                    if idx & (1 << i):
+                        idx -= (1 << i)
+                        sum += self.data[idx]
+                        break
+                    i += 1
+            return sum
+        return _sum(r) - _sum(l-1)
+
+# UnionFind　同じ連結成分にあるノード数を負の数でとる
+# https://atcoder.jp/contests/practice2/tasks/practice2_a
+# https://atcoder.jp/contests/abc181/tasks/abc181_f
+class UnionFind:
+    def __init__(self, size):
+        self.data = [-1] * size
+    def root(self, x):
+        if self.data[x] < 0:
+            return x
+        ans = self.root(self.data[x])
+        self.data[x] = ans
+        return ans
+    def unite(self, x, y):
+        x = self.root(x)
+        y = self.root(y)
+        if x == y:
+            return False
+        if self.data[x] > self.data[y]:
+            x, y = y, x
+        self.data[x] += self.data[y]
+        self.data[y] = x
+        return True
+    def same(self, x, y):
+        return self.root(x) == self.root(y)
 
     # 素数の列挙、エラトステネスの篩
     def sieve_of_eratosthenes(limit: int) -> list:
@@ -43,6 +101,48 @@ from typing import Generator
             #     # print((i >> j) & 1)
             #     bit = (i >> j) & 1)
             yield [(i >> j) & 1 for j in range(digit)]
+
+    # 半全部列挙
+    # https://atcoder.jp/contests/abc184/tasks/abc184_f
+    # 1. 半分のグループBを全列挙
+    # 2. 残り半分のグループCを全列挙
+    # 3. 二分探索を用いて最適な組み合わせを探す
+    # Aの中からlimit以内となる最大値を求める
+    def half_full_search(A: list, limit: int) -> int:
+        len_n = len(A)
+
+        def _bit_search(digit: int):
+            for i in range(2 ** digit):
+                yield [(i >> j) & 1 for j in range(digit)]
+
+        L = A[:len_n//2]
+        left = []
+        for i in range(2 ** (len_n//2)):
+            tmp = 0
+            for j in range(len_n//2):
+                b = (i >> j) & 1
+                tmp += b * L[j]
+            left.append(tmp)
+        R = A[len_n//2:]
+        right = []
+        for i in range(2 ** (len_n - len_n // 2)):
+            tmp = 0
+            for j in range((len_n - len_n // 2)):
+                b = (i >> j) & 1
+                tmp += b * R[j]
+            right.append(tmp)
+        left = sorted(left)
+
+        import bisect
+        max_value = 0
+        for r in right:
+            tmp = limit - r
+            if tmp >= 0:
+                idx = bisect.bisect_right(left, tmp)
+                l = left[idx-1]
+                max_value = max(max_value, r+l)
+        return max_value
+
 
     # 組み合わせの公式を計算
     # https://atcoder.jp/contests/abc167/tasks/abc167_e
@@ -92,3 +192,17 @@ from typing import Generator
             cumsum_matrix.append(add_matrix)
 
         return cumsum_matrix
+
+    # ナップザック問題をrecursive
+    # O(2**N)のため、10**8-9あたりまで
+    import sys
+    sys.setrecursionlimit(10 ** 9)
+    def _knapsack(weight: list, limit: int) -> int:
+        if not weight:
+            return limit
+        w = weight[-1]
+        val = _knapsack(weight[:-1], limit)
+        if limit >= w:
+            val_2 = _knapsack(weight[:-1], limit - w)
+            val = min(val, val_2)
+        return val
