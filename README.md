@@ -8,7 +8,7 @@
 # 使い方
 1. 必要なライブラリをインストール
     ```
-    pip install requirements.txt
+    pip install -r requirements.txt
     ```
    
 2. 問題をセッティング 
