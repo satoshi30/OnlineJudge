@@ -1,6 +1,7 @@
 # 競技プログラミングを行う上での典型作業を自動化
 - [online-judge-tools/oj](https://github.com/online-judge-tools/oj) を利用して作成
 - 言語 : python 3.8.2
+  - M1チップのMacはpython 3.9.7
 - 対応しているwebサイト
     - [AtCoder](https://atcoder.jp/home)
     - **他のサイトは利用状況に応じて追加していく**
@@ -9,6 +10,10 @@
 1. 必要なライブラリをインストール
     ```
     pip install -r requirements.txt
+    ```
+    M1チップのMacは以下よりインストール
+    ```
+    pip install -r M1_requirements.txt
     ```
    
 2. 問題をセッティング 
