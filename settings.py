@@ -1,7 +1,18 @@
 import os
 import shutil
+import argparse
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Language')
+    parser.add_argument('-l', '--language', type=str, default='python', help='Language Option [python, pypy, c++]')
+    args = parser.parse_args()
+    if args.language in ['python', 'pypy']:
+        main_file = "main.py"
+    elif args.language in ['gcc', 'clang']:
+        main_file = "main.cpp"
+    else:
+        raise Exception()
+
     url = input('Paste the url in problem : ')
     split_url = url.split('/')
 
@@ -21,13 +32,15 @@ if __name__ == '__main__':
             f.write(f'website = {website}\n')
             f.write(f'url = {url}\n')
             f.write(f'dir = {dir}\n')
+            f.write(f'language = {args.language}\n')
+            f.write(f'main = {main_file}\n')
 
         # 問題のディレクトリを作成
         os.makedirs(dir, exist_ok=True)
         # main.pyを問題ディレクトリへ配置
-        file_dir = os.path.join(dir, 'main.py')
+        file_dir = os.path.join(dir, main_file)
         if not os.path.exists(file_dir):
-            shutil.copyfile('./default_main.py', os.path.join(dir, 'main.py'))
+            shutil.copyfile(f'./default_main/{main_file}', os.path.join(dir, main_file))
 
         from oj_commands import get_samples
         from oj_commands import online_login

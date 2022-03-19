@@ -9,7 +9,7 @@ diff-match-patch==20200713
 idna==2.10
 jsonschema==3.2.0
 lxml==4.6.2
-numpy==1.18.2
+numpy==1.22.3
 online-judge-api-client==10.8.0
 online-judge-tools==11.1.1
 pyrsistent==0.17.3
